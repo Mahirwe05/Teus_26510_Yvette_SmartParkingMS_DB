@@ -313,13 +313,14 @@ VALUES (1, 1, 1, TO_DATE('2025-05-08 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_DAT
 
 INSERT INTO Reservation (ReservationID, CustomerID, ParkingSpaceID, StartTime, EndTime, PaymentStatus, ReservationStatus)
 VALUES (2, 2, 2, TO_DATE('2025-05-07 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE('2025-05-07 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Pending', 'Canceled');
-
-```
-
-   
  
 );
 ```
+
+## SCREENSHOT OF THE TABLES CREATED, AND THE INSERTED ROWS.
+
+![Screenshot 2025-05-08 190849](https://github.com/user-attachments/assets/76593952-8d44-4452-89ef-6aacad9a61eb)
+
 
 
 
