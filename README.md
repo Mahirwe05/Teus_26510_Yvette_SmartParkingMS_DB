@@ -214,6 +214,112 @@ Showing PDB and the user who has all privileges
 ![Screenshot 2025-05-08 170929](https://github.com/user-attachments/assets/8268fd80-dc61-4090-923d-289f985e2dc2)
 
 
+## PHASE 5
+
+## CREATING TABLES AND INSERTING DATA  IN THE TABLES
+
+```SQL
+CREATE TABLE Customer ( 
+    CustomerID INT PRIMARY KEY, 
+    Name VARCHAR2(100) NOT NULL, 
+    Email VARCHAR2(100) UNIQUE NOT NULL, 
+    PhoneNumber VARCHAR2(20) NOT NULL, 
+    LicensePlate VARCHAR2(20) NOT NULL, 
+    CONSTRAINT chk_customer_email CHECK (Email LIKE '%@%') 
+);
+
+-- PARKING LOT OPERATOR TABLE
+CREATE TABLE ParkingLotOperator ( 
+    OperatorID INT PRIMARY KEY, 
+    Name VARCHAR2(100) NOT NULL, 
+    ContactInformation VARCHAR2(150) NOT NULL 
+);
+
+-- PARKING SPACE TABLE
+CREATE TABLE ParkingSpace ( 
+    ParkingSpaceID INT PRIMARY KEY, 
+    Location VARCHAR2(100) NOT NULL, 
+    SlotNumber VARCHAR2(10) NOT NULL, 
+    AvailabilityStatus VARCHAR2(20) NOT NULL, 
+    ParkingType VARCHAR2(20) NOT NULL, 
+    PricePerHour DECIMAL(6,2) NOT NULL, 
+    OperatorID INT NOT NULL, 
+    CONSTRAINT fk_parking_operator FOREIGN KEY (OperatorID) REFERENCES ParkingLotOperator(OperatorID),
+    CONSTRAINT chk_availability CHECK (AvailabilityStatus IN ('Available', 'Occupied', 'Reserved')), 
+    CONSTRAINT chk_parking_type CHECK (ParkingType IN ('Regular', 'Handicap', 'VIP', 'Electric Vehicle'))
+);
+
+-- RESERVATION TABLE
+CREATE TABLE Reservation ( 
+    ReservationID INT PRIMARY KEY, 
+    CustomerID INT NOT NULL, 
+    ParkingSpaceID INT NOT NULL, 
+    StartTime DATE NOT NULL, 
+    EndTime DATE NOT NULL, 
+    PaymentStatus VARCHAR2(20) NOT NULL, 
+    ReservationStatus VARCHAR2(20) NOT NULL, 
+    CONSTRAINT fk_res_customer FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID), 
+    CONSTRAINT fk_res_parking FOREIGN KEY (ParkingSpaceID) REFERENCES ParkingSpace(ParkingSpaceID), 
+    CONSTRAINT chk_payment_sTables
+tatus CHECK (PaymentStatus IN ('Paid', 'Pending', 'Failed')), 
+    CONSTRAINT chk_reservation_status CHECK (ReservationStatus IN ('Confirmed', 'Canceled', 'Completed'))
+);
+CREATE TABLE Relationships (
+    RelationshipID INT PRIMARY KEY,
+    TableName VARCHAR2(100) NOT NULL,
+    RelatedTableName VARCHAR2(100) NOT NULL,
+    ForeignKeyColumn VARCHAR2(100) NOT NULL,
+    ReferenceColumn VARCHAR2(100) NOT NULL,
+    RelationshipDescription VARCHAR2(255) NOT NULL
+);
+
+DROP TABLE Relationships;
+CREATE TABLE TableRelationships (
+    RelationshipID INT PRIMARY KEY,
+    SourceTable VARCHAR2(100) NOT NULL,
+    TargetTable VARCHAR2(100) NOT NULL,
+    SourceColumn VARCHAR2(100) NOT NULL,
+    TargetColumn VARCHAR2(100) NOT NULL,
+    RelationshipType VARCHAR2(50) NOT NULL,
+    Description VARCHAR2(255)
+);
+-- INSERT INTO Customer
+INSERT INTO Customer (CustomerID, Name, Email, PhoneNumber, LicensePlate)
+VALUES (1, 'John Doe', 'john.doe@gmail.com', '1234567890', 'ABC123');
+
+INSERT INTO Customer (CustomerID, Name, Email, PhoneNumber, LicensePlate)
+VALUES (2, 'Jane Smith', 'jane.smith@gmail.com', '0987654321', 'XYZ789');
+
+-- INSERT INTO ParkingLotOperator
+INSERT INTO ParkingLotOperator (OperatorID, Name, ContactInformation)
+VALUES (1, 'Mike Operator', 'mike.operator@gmail.com');
+
+INSERT INTO ParkingLotOperator (OperatorID, Name, ContactInformation)
+VALUES (2, 'Anna Admin', 'anna.admin@gmail.com');
+
+-- INSERT INTO ParkingSpace
+INSERT INTO ParkingSpace (ParkingSpaceID, Location, SlotNumber, AvailabilityStatus, ParkingType, PricePerHour, OperatorID)
+VALUES (1, 'Lot A', 'A1', 'Available', 'Regular', 2.50, 1);
+
+INSERT INTO ParkingSpace (ParkingSpaceID, Location, SlotNumber, AvailabilityStatus, ParkingType, PricePerHour, OperatorID)
+VALUES (2, 'Lot B', 'B1', 'Occupied', 'VIP', 5.00, 2);
+
+INSERT INTO ParkingSpace (ParkingSpaceID, Location, SlotNumber, AvailabilityStatus, ParkingType, PricePerHour, OperatorID)
+VALUES (3, 'Lot A', 'A2', 'Reserved', 'Electric Vehicle', 3.00, 1);
+
+-- INSERT INTO Reservation
+INSERT INTO Reservation (ReservationID, CustomerID, ParkingSpaceID, StartTime, EndTime, PaymentStatus, ReservationStatus)
+VALUES (1, 1, 1, TO_DATE('2025-05-08 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE('2025-05-08 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Paid', 'Confirmed');
+
+INSERT INTO Reservation (ReservationID, CustomerID, ParkingSpaceID, StartTime, EndTime, PaymentStatus, ReservationStatus)
+VALUES (2, 2, 2, TO_DATE('2025-05-07 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE('2025-05-07 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Pending', 'Canceled');
+
+```
+
+   
+ 
+);
+```
 
 
 
