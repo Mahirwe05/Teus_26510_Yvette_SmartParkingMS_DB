@@ -152,3 +152,55 @@ The process starts when a customer creates an account. They can either cancel or
 
 ---
 ## Phase 2
+
+# 🔗 1. Entity-Relationship (ER) Model
+
+---
+
+## 📌 Entities and Attributes
+
+| 🧱 Entity               | 🧬 Attributes                                                                                      |
+|------------------------|----------------------------------------------------------------------------------------------------|
+| 👤 **Customer**              | CustomerID (PK, INT), Name (VARCHAR2(100)), Email (VARCHAR2(100)), PhoneNumber (VARCHAR2(20)), LicensePlate (VARCHAR2(20)) |
+| 🧑‍💼 **Parking Lot Operator** | OperatorID (PK, INT), Name (VARCHAR2(100)), ContactInformation (VARCHAR2(150))                |
+| 🅿️ **Parking Space**         | ParkingSpaceID (PK, INT), Location (VARCHAR2(100)), SlotNumber (VARCHAR2(10)), AvailabilityStatus (VARCHAR2(20)), ParkingType (VARCHAR2(20)), PricePerHour (DECIMAL(6,2)), OperatorID (FK) |
+| 📅 **Reservation**           | ReservationID (PK, INT), CustomerID (FK), ParkingSpaceID (FK), StartTime (DATE), EndTime (DATE), PaymentStatus (VARCHAR2(20)), ReservationStatus (VARCHAR2(20)) |
+
+---
+
+## 🔁 Relationships & Constraints
+
+### 📊 Relationships
+
+| 🔗 Relationship                        | 🔢 Type     | 📝 Details                                                  |
+|---------------------------------------|------------|-------------------------------------------------------------|
+| Customer → Reservation                | 1 : Many   | A customer can have multiple reservations.                 |
+| ParkingSpace → Reservation            | 1 : Many   | A parking space can be reserved multiple times.            |
+| ParkingLotOperator → ParkingSpace     | 1 : Many   | An operator manages multiple parking spaces.               |
+
+---
+
+### 🧷 Constraints Applied
+
+| 🔐 Constraint Type | 📌 Description                                                                 |
+|--------------------|---------------------------------------------------------------------------------|
+| ❗ Not Null         | Name, Email, PhoneNumber (in Customer table)                                   |
+| 🔑 Primary Key      | Each entity has a unique identifier (e.g., CustomerID, OperatorID)             |
+| 🔁 Foreign Key      | Enforce links: Reservation → Customer, ParkingSpace → Operator, etc.          |
+| 🔍 Unique           | Email must be unique in the Customer table                                     |
+| ✅ Check            | Ensures allowed values for: AvailabilityStatus, ParkingType, PaymentStatus, ReservationStatus |
+
+---
+
+## 🧾 Data Types
+
+| 📦 Data Type  | 🔍 Used For                                          |
+|---------------|------------------------------------------------------|
+| `INT`         | IDs and identifiers                                 |
+| `VARCHAR2`    | Text fields (names, emails, phone numbers, etc.)    |
+| `DECIMAL(6,2)`| Prices (
+
+
+## ER DIAGRAM 
+![Screenshot 2025-05-08 155304](https://github.com/user-attachments/assets/123e6827-556f-4207-848e-b518150760b9)
+
