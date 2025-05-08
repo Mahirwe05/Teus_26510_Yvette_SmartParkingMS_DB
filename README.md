@@ -1,4 +1,4 @@
-## Phase 1
+## PHASE 1
 # 🚗 SMART PARKING MANAGEMENT SYSTEM
 
 ## 📄 Project Description
@@ -37,7 +37,7 @@ and **streamline the reservation process** in busy urban areas.
 - 🚗🔄 **Reduce Traffic Congestion**: Minimize vehicle movement in search of parking.
 
 ---
-## Phase 2
+## PHASE  2
 # 📌 1. Define the Scope
 
 ## 📊 Relevance to MIS
@@ -151,7 +151,7 @@ The process starts when a customer creates an account. They can either cancel or
 > 💡 **Overall**, it makes managing public parking **smarter, faster, and more effective.**
 
 ---
-## Phase 2
+## PHASE 3
 
 # 🔗 1. Entity-Relationship (ER) Model
 
@@ -203,4 +203,17 @@ The process starts when a customer creates an account. They can either cancel or
 
 ## ER DIAGRAM 
 ![Screenshot 2025-05-08 155304](https://github.com/user-attachments/assets/123e6827-556f-4207-848e-b518150760b9)
+
+## PHASE 4
+Showing PDB and the user who has all privileges
+![Screenshot 2025-05-08 155854](https://github.com/user-attachments/assets/c6b6423d-388a-4787-8394-f6a071773eb4)
+
+
+## Oracle Enterprise Manager
+![Screenshot 2025-05-08 170813](https://github.com/user-attachments/assets/4ea37c0c-d49b-4184-bc16-f54efef279aa)
+![Screenshot 2025-05-08 170929](https://github.com/user-attachments/assets/8268fd80-dc61-4090-923d-289f985e2dc2)
+
+
+
+
 
