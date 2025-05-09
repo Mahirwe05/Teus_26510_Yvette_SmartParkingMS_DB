@@ -322,5 +322,147 @@ VALUES (2, 2, 2, TO_DATE('2025-05-07 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_DAT
 ![Screenshot 2025-05-08 190849](https://github.com/user-attachments/assets/76593952-8d44-4452-89ef-6aacad9a61eb)
 
 
+## PHASE 6
+## 📦  Database Interaction and Transactions
+This phase focuses on executing robust database interactions in the Parking Reservation System, covering DDL/DML operations, analytics using window functions, and modular SQL programming using procedures, functions, cursors, and packages.
+
+📌 Tasks & Deliverables
+🔧 1. DDL & DML Operations
+✅ DDL – Table Alteration & Deletion
+
+## Add a new column to Reservation
+```sql
+
+ALTER TABLE Reservation ADD CreatedAt DATE DEFAULT SYSDATE;
+```
+
+## Drop a column from Reservation
+```sql
+ALTER TABLE Reservation DROP COLUMN CreatedAt;
+```
+## Drop the Reservation table
+```sql
+DROP TABLE Reservation;
+```
+✅ DML – Insert, Update, Delete
+
+## Update the availability status of a parking space
+```sql
+UPDATE ParkingSpace 
+SET AvailabilityStatus = 'Occupied' 
+WHERE ParkingSpaceID = 1;
+```
+## Delete dependent reservation(s) before deleting customer
+```sql
+DELETE FROM Reservation 
+WHERE CustomerID = 2;
+```
+## Then delete the customer
+```sql
+DELETE FROM Customer 
+WHERE CustomerID = 2;
+```
+📊 2. Analytics Using Window Functions
+## 🔍 Problem Statement:
+## Analyze total number of reservations and hours reserved per customer, ranked by total hours.
+
+```sql 
+SELECT 
+    c.Name,
+    COUNT(r.ReservationID) OVER (PARTITION BY c.CustomerID) AS TotalReservations,
+    SUM((r.EndTime - r.StartTime) * 24) OVER (PARTITION BY c.CustomerID) AS TotalHours
+FROM 
+    Customer c
+JOIN 
+    Reservation r ON c.CustomerID = r.CustomerID
+ORDER BY 
+    TotalHours DESC;
+🛠️ 3. Stored Procedures, Functions & Exception Handling
+```
+## 🧩 Procedure – Fetch Reservations by Customer
+```sql 
+CREATE OR REPLACE PROCEDURE GetReservationsByCustomer(p_CustomerID IN NUMBER) IS
+    CURSOR res_cursor IS
+        SELECT * FROM Reservation WHERE CustomerID = p_CustomerID;
+    res_row Reservation%ROWTYPE;
+BEGIN
+    OPEN res_cursor;
+    LOOP
+        FETCH res_cursor INTO res_row;
+        EXIT WHEN res_cursor%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('ReservationID: ' || res_row.ReservationID || 
+                             ', Status: ' || res_row.ReservationStatus || 
+                             ', Time: ' || res_row.StartTime || ' to ' || res_row.EndTime);
+    END LOOP;
+    CLOSE res_cursor;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+END;
+```
+
+## 🧮 Function – Calculate Duration in Hours
+```sql
+
+CREATE OR REPLACE FUNCTION GetDurationHours(p_Start DATE, p_End DATE)
+RETURN NUMBER IS
+BEGIN
+    RETURN (p_End - p_Start) * 24;
+END;
+```
+## 📦 4. Package for Modularization
+## 🔐 Package Specification
+```sql
+
+CREATE OR REPLACE PACKAGE ReservationPkg IS
+    PROCEDURE GetReservationsByCustomer(p_CustomerID IN NUMBER);
+    FUNCTION GetDurationHours(p_Start DATE, p_End DATE) RETURN NUMBER;
+END ReservationPkg;
+```
+## 🔧 Package Body
+```sql
+CREATE OR REPLACE PACKAGE BODY ReservationPkg IS
+
+    PROCEDURE GetReservationsByCustomer(p_CustomerID IN NUMBER) IS
+        CURSOR res_cursor IS
+            SELECT * FROM Reservation WHERE CustomerID = p_CustomerID;
+        res_row Reservation%ROWTYPE;
+    BEGIN
+        OPEN res_cursor;
+        LOOP
+            FETCH res_cursor INTO res_row;
+            EXIT WHEN res_cursor%NOTFOUND;
+            DBMS_OUTPUT.PUT_LINE('ReservationID: ' || res_row.ReservationID || 
+                                 ', Status: ' || res_row.ReservationStatus || 
+                                 ', Time: ' || res_row.StartTime || ' to ' || res_row.EndTime);
+        END LOOP;
+        CLOSE res_cursor;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+    END;
+
+
+    FUNCTION GetDurationHours(p_Start DATE, p_End DATE)
+    RETURN NUMBER IS
+    BEGIN
+        RETURN (p_End - p_Start) * 24;
+    END;
+
+END ReservationPkg;
+```
+## 🧪 5. Testing
+
+## Execute procedure
+```sql
+ EXEC ReservationPkg.GetReservationsByCustomer(1);
+```
+##  Test function output
+```sql
+SELECT ReservationPkg.GetDurationHours(
+    TO_DATE('2025-05-08 08:00:00', 'YYYY-MM-DD HH24:MI:SS'),
+    TO_DATE('2025-05-08 10:00:00', 'YYYY-MM-DD HH24:MI:SS')
+) AS DurationHours FROM dual;
+```
 
 
