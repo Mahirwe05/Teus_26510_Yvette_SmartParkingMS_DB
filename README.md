@@ -464,5 +464,137 @@ SELECT ReservationPkg.GetDurationHours(
     TO_DATE('2025-05-08 10:00:00', 'YYYY-MM-DD HH24:MI:SS')
 ) AS DurationHours FROM dual;
 ```
+## PHASE 7
 
+## 🔐 Advanced Database Programming and Auditing
+
+
+
+### 🧩 1. Problem Statement
+
+#### 🚧 Real-world Challenge:
+The system must prevent unauthorized or risky changes to important database tables, especially during business-sensitive
+periods like weekdays and public holidays.
+
+#### ✅ Objectives:
+- Stop employees from making any **INSERT**, **UPDATE**, or **DELETE** actions during weekdays (Monday to Friday).
+- Also block actions on predefined **public holidays** within the upcoming month.
+- Track all modification attempts in a dedicated **audit log** with details like user ID, timestamp, action type, and status (allowed or denied).
+
+#### 🔧 Why Use Triggers, Packages, and Auditing?
+- **Triggers** allow real-time enforcement of restrictions at the database level.
+- **Packages** group logic (functions/procedures) for reuse and clean design.
+- **Auditing** logs all user actions for traceability, which is essential in a system handling sensitive data like vehicle reservations and payments.
+
+---
+
+### 📅 2. Holiday Reference Table
+
+```sql
+CREATE TABLE HolidayList (
+    HolidayDate DATE PRIMARY KEY,
+    Description VARCHAR2(100)
+);
+
+-- Insert some upcoming holidays (update these accordingly)
+INSERT INTO HolidayList VALUES (TO_DATE('2025-05-17', 'YYYY-MM-DD'), 'Independence Day');
+INSERT INTO HolidayList VALUES (TO_DATE('2025-05-27', 'YYYY-MM-DD'), 'Memorial Day');
+```
+## 🚫 3. Restriction Trigger: Block Weekday + Holiday Manipulation
+```sql
+
+CREATE OR REPLACE TRIGGER trg_block_employee_changes
+BEFORE INSERT OR UPDATE OR DELETE ON Reservation
+BEGIN
+    IF TO_CHAR(SYSDATE, 'DY') IN ('MON', 'TUE', 'WED', 'THU', 'FRI') OR
+       EXISTS (
+           SELECT 1 FROM HolidayList
+           WHERE HolidayDate = TRUNC(SYSDATE)
+       ) THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Operation not allowed during weekdays or public holidays.');
+    END IF;
+END;
+```
+## This trigger checks if today is a weekday or listed holiday, and blocks any modifications accordingly.
+
+## 📦 4. Auditing Table & Audit Logic
+```sql
+CREATE TABLE AuditLog (
+    LogID NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    UserID VARCHAR2(50),
+    ActionType VARCHAR2(20),
+    ActionTime TIMESTAMP,
+    Operation VARCHAR2(20),
+    Status VARCHAR2(10)
+);
+```
+## 🔧 Function for Auditing
+```sql
+
+CREATE OR REPLACE FUNCTION log_audit(
+    p_user_id VARCHAR2,
+    p_action_type VARCHAR2,
+    p_operation VARCHAR2,
+    p_status VARCHAR2
+) RETURN NUMBER IS
+BEGIN
+    INSERT INTO AuditLog (UserID, ActionType, ActionTime, Operation, Status)
+    VALUES (p_user_id, p_action_type, SYSTIMESTAMP, p_operation, p_status);
+    RETURN 1;
+END;
+```
+
+## 🔐 Trigger with Logging
+```sql
+CREATE OR REPLACE TRIGGER trg_secure_reservation_changes
+BEFORE INSERT OR UPDATE OR DELETE ON Reservation
+DECLARE
+    v_status VARCHAR2(10);
+    v_user VARCHAR2(50) := SYS_CONTEXT('USERENV', 'SESSION_USER');
+BEGIN
+    IF TO_CHAR(SYSDATE, 'DY') IN ('MON', 'TUE', 'WED', 'THU', 'FRI') OR
+       EXISTS (
+           SELECT 1 FROM HolidayList
+           WHERE HolidayDate = TRUNC(SYSDATE)
+       ) THEN
+        v_status := 'Denied';
+        log_audit(v_user, 'Blocked Attempt', ORA_SYSEVENT, v_status);
+        RAISE_APPLICATION_ERROR(-20002, 'Modifications blocked during restricted periods.');
+    ELSE
+        v_status := 'Allowed';
+        log_audit(v_user, 'Data Change', ORA_SYSEVENT, v_status);
+    END IF;
+END;
+```
+## 🔍 5. How This Improves the System
+🔐 Security: Prevents data tampering during critical periods
+
+📋 Accountability: Tracks who attempted what and when
+
+🛠️ Automation: Automatically enforces rules with no manual monitoring
+
+🧩 Scalability: Logic can be reused through packages and functions
+
+## 🧪 6. Testing the Logic
+Try this query during a weekday or holiday:
+
+```sql
+DELETE FROM Reservation WHERE ReservationID = 1;
+```
+## Expected Result:
+
+ORA-20002: Modifications blocked during restricted periods.
+
+## Check the log:
+
+
+```sql
+ SELECT * FROM AuditLog ORDER BY ActionTime DESC;
+```
+## ✅ Inshort
+Feature	Description
+🛑 Trigger	Prevents changes on weekdays/holidays
+📋 Audit Table	Records all attempts
+📦 Function	Used to insert audit records
+📊 Logging	Captures user, time, operation, and status
 
