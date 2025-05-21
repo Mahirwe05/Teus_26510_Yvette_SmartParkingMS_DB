@@ -141,7 +141,7 @@ The process starts when a customer creates an account. They can either cancel or
 
 ---
 
-## 🌟 Why This Process Is Important
+## 🌟 Why This Process Is Important for organizational efficiency.
 
 - 🅿️ **Efficient use of parking spaces**  
 - 🚦 **Reduces traffic and waiting times**  
