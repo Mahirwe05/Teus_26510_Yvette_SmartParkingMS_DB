@@ -1,3 +1,11 @@
+# Name: MAHIRWE YVETTE
+# ID:26510
+
+
+## CAPSTONE PROJECT
+
+
+
 ## PHASE 1
 # 🚗 SMART PARKING MANAGEMENT SYSTEM
 
@@ -597,4 +605,6 @@ Feature	Description
 📋 Audit Table	Records all attempts
 📦 Function	Used to insert audit records
 📊 Logging	Captures user, time, operation, and status
+
+
 
