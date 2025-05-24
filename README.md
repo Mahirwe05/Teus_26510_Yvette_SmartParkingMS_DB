@@ -385,7 +385,8 @@ JOIN
     Reservation r ON c.CustomerID = r.CustomerID
 ORDER BY 
     TotalHours DESC;
-🛠️ 3. Stored Procedures, Functions & Exception Handling
+
+## 🛠️ 3. Stored Procedures, Functions & Exception Handling
 ```
 ## 🧩 Procedure – Fetch Reservations by Customer
 ```sql 
