@@ -15,9 +15,13 @@ and **streamline the reservation process** in busy urban areas.
 
 ---
 
-## ❗ Problem Definition
+## ❗ Problem Definition and Problem Statement
 
 "Current urban parking systems are inefficient, leading to traffic congestion, wasted fuel, and driver frustration. The problem is the lack of a real-time, automated system that helps drivers find and reserve parking spots efficiently. This project aims to develop a smart, database-driven solution that automates parking space management and improves user experience."
+
+In many urban areas, drivers waste time and fuel searching for parking due to inefficient parking management. This leads to traffic congestion, environmental pollution, and driver frustration. The current manual or semi-automated systems lack real-time updates and reservation features. The goal of this project is to develop a smart, automated parking reservation system that provides real-time availability, booking features, and secure payment options to improve urban mobility and user convenience.
+
+
 
 ---
 
