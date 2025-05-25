@@ -600,12 +600,19 @@ ORA-20002: Modifications blocked during restricted periods.
 ```sql
  SELECT * FROM AuditLog ORDER BY ActionTime DESC;
 ```
+
 ## ✅ Inshort
 Feature	Description
 🛑 Trigger	Prevents changes on weekdays/holidays
 📋 Audit Table	Records all attempts
 📦 Function	Used to insert audit records
 📊 Logging	Captures user, time, operation, and status
+
+## Normalization
+
+| **1NF (First Normal Form)**  | Eliminate repeating groups. Each column should hold atomic (indivisible) values.                                                     |
+| **2NF (Second Normal Form)** | Be in 1NF and remove **partial dependencies** (i.e., non-key attributes must depend on the whole primary key).
+| **3NF (Third Normal Form)**  | Be in 2NF and remove **transitive dependencies** (i.e., non-key → non-key).                                    
 
 
 
