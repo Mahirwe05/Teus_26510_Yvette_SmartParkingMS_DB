@@ -17,9 +17,7 @@ and **streamline the reservation process** in busy urban areas.
 
 ## ❗ Problem Definition
 
-- 🚦 **Traffic Congestion & Wasted Time**  
-- 🅿️ **Inefficient Parking Space Utilization**  
-- 🚫 **Unauthorized Parking & Security Issues**
+"Current urban parking systems are inefficient, leading to traffic congestion, wasted fuel, and driver frustration. The problem is the lack of a real-time, automated system that helps drivers find and reserve parking spots efficiently. This project aims to develop a smart, database-driven solution that automates parking space management and improves user experience."
 
 ---
 
